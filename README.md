@@ -20,17 +20,7 @@ and this dependency
 <dependency>
     <groupId>com.github.hawolt</groupId>
     <artifactId>riot-xmpp</artifactId>
-    <version>09ec0f6916</version>
-</dependency>
-```
-
-riot-xmpp requires the following dependency
-
-```xml
-<dependency>
-    <groupId>com.github.hawolt</groupId>
-    <artifactId>league-client-api</artifactId>
-    <version>fe40d42c2c</version>
+    <version>f29d3f720c</version>
 </dependency>
 ```
 
@@ -40,18 +30,18 @@ an example usage that will connect you to a chat server looks as follows
 
 ```java
 import com.hawolt.authentication.LocalCookieSupplier;
-import com.hawolt.event.EventListener;
-import com.hawolt.event.EventType;
-import com.hawolt.event.objects.other.PlainData;
+import event.com.hawolt.xmpp.EventListener;
+import event.com.hawolt.xmpp.EventType;
+import other.objects.event.com.hawolt.xmpp.PlainData;
 import com.hawolt.logger.Logger;
 import com.hawolt.manifest.RMANCache;
-import com.hawolt.misc.impl.RiotDataCallback;
+import impl.misc.com.hawolt.xmpp.RiotDataCallback;
 import com.hawolt.virtual.leagueclient.VirtualLeagueClient;
 import com.hawolt.virtual.leagueclient.VirtualLeagueClientInstance;
 import com.hawolt.virtual.leagueclient.exception.LeagueException;
 import com.hawolt.virtual.riotclient.VirtualRiotClient;
 import com.hawolt.virtual.riotclient.VirtualRiotClientInstance;
-import com.hawolt.xmpp.VirtualRiotXMPPClient;
+import xmpp.com.hawolt.xmpp.VirtualRiotXMPPClient;
 
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
