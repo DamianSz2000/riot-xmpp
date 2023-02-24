@@ -1,40 +1,29 @@
 package com.hawolt.xmpp.core.input;
 
-import java.util.LinkedList;
-import java.util.List;
-
-/**
- * Created: 10/04/2022 14:15
- * Author: Twitter @hawolt
- **/
+import java.util.Arrays;
 
 public class XMLBuffer {
 
-    private final List<Byte> buffer = new LinkedList<>();
+    private byte[] buffer = new byte[1024];
+    private int bufferIndex = 0;
 
     private final InputCallback callback;
+    private String breakpoint;
 
     public XMLBuffer(InputCallback callback) {
         this.callback = callback;
     }
 
     public void append(int character) {
-        buffer.add((byte) character);
+        if (bufferIndex == buffer.length) {
+            buffer = Arrays.copyOf(buffer, buffer.length * 2);
+        }
+        buffer[bufferIndex++] = (byte) character;
         if (character == '>') check();
     }
 
-    private String breakpoint;
-
-    private byte[] toByte() {
-        byte[] b = new byte[buffer.size()];
-        for (int i = 0; i < buffer.size(); i++) {
-            b[i] = buffer.get(i);
-        }
-        return b;
-    }
-
     private void check() {
-        String buffered = new String(toByte());
+        String buffered = new String(buffer, 0, bufferIndex);
         if (buffered.startsWith("</")) {
             reset();
         } else if (buffered.startsWith("<?")) {
@@ -45,7 +34,7 @@ public class XMLBuffer {
             }
             if (breakpoint != null) {
                 if (buffered.endsWith(breakpoint)) {
-                    dispatch(buffered);
+                    dispatched(buffered);
                 }
             }
         } else if (buffered.startsWith("<")) {
@@ -62,19 +51,19 @@ public class XMLBuffer {
             }
             if (breakpoint != null) {
                 if (buffered.endsWith(breakpoint)) {
-                    dispatch(buffered);
+                    dispatched(buffered);
                 }
             }
         }
     }
 
-    private void dispatch(String line) {
+    private void dispatched(String line) {
         callback.onInput(line);
         reset();
     }
 
     private void reset() {
-        buffer.clear();
+        bufferIndex = 0;
         breakpoint = null;
     }
 }
